@@ -8,6 +8,13 @@
       "when": 1794009414151,
       "tag": "0000_mvp_core_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794009660961,
+      "tag": "0001_storage_image_policies",
+      "breakpoints": true
     }
   ]
 }

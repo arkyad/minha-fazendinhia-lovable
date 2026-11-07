@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Database
+- Orders, items, customers and status history are written only by SECURITY DEFINER functions (`place_order`, `update_order_status`); clients get SELECT only, so prices/totals can't be tampered with.
+- Anti-spam limits live in `app_settings` (null = disabled) so values change without migrations.
