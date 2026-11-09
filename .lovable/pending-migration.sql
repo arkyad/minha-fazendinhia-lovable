@@ -174,7 +174,15 @@ BEGIN
       'whatsapp', (SELECT whatsapp FROM public.properties WHERE id = v_existing.property_id), 'replayed', true);
   END IF;
 
-  -- 3. Contagem atômica antes de qualquer outra validação (fica fora do bloco que pode ser desfeito)
+  -- 3. Proteção obrigatória: sem os 4 parâmetros anti-spam, pedidos públicos ficam bloqueados
+  IF private.get_setting('rate_limit_phone_window_seconds') IS NULL
+     OR private.get_setting('rate_limit_phone_max') IS NULL
+     OR private.get_setting('rate_limit_property_window_seconds') IS NULL
+     OR private.get_setting('rate_limit_property_max') IS NULL THEN
+    RETURN jsonb_build_object('ok', false, 'error', 'ORDERS_DISABLED');
+  END IF;
+
+  -- 4. Contagem atômica antes de qualquer outra validação (fica fora do bloco que pode ser desfeito)
   v_prop_exists := EXISTS (SELECT 1 FROM public.properties WHERE id = p_property_id);
   IF v_prop_exists AND v_phone ~ '^[0-9]{10,15}$' THEN
     v_hit_phone := private.rate_limit_hit('phone:' || p_property_id || ':' || v_phone,
@@ -191,7 +199,7 @@ BEGIN
     RETURN jsonb_build_object('ok', false, 'error', 'RATE_LIMITED');
   END IF;
 
-  -- 4. Bloco protegido: qualquer falha desfaz só o pedido; os contadores permanecem
+  -- 5. Bloco protegido: qualquer falha desfaz só o pedido; os contadores permanecem
   BEGIN
     IF NOT coalesce(v_is_obj, false) THEN RAISE EXCEPTION 'INVALID_CUSTOMER'; END IF;
     IF p_items IS NULL OR jsonb_typeof(p_items) <> 'array' THEN RAISE EXCEPTION 'INVALID_ITEMS'; END IF;
