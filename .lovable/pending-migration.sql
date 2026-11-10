@@ -280,7 +280,11 @@ END; $$;
 -- ===== 8. Privilégios mínimos =====
 REVOKE ALL ON ALL TABLES IN SCHEMA public FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM PUBLIC, anon, authenticated;
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.block_mutation(), public.block_physical_delete(), public.guard_order_change(),
+  public.guard_product_image_update(), public.guard_product_update(), public.guard_property_image_update(),
+  public.guard_property_write(), public.handle_new_user(), public.set_updated_at(),
+  public.place_order(uuid, uuid, jsonb, jsonb, text), public.update_order_status(uuid, public.order_status, text)
+  FROM PUBLIC, anon, authenticated;
 REVOKE TRUNCATE ON ALL TABLES IN SCHEMA public FROM service_role;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM anon, authenticated;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON SEQUENCES FROM anon, authenticated;
