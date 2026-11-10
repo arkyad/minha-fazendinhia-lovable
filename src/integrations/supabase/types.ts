@@ -391,6 +391,7 @@ export type Database = {
           owner_id: string
           slug: string
           state: string | null
+          status: Database["public"]["Enums"]["property_status"]
           updated_at: string
           whatsapp: string
         }
@@ -404,6 +405,7 @@ export type Database = {
           owner_id: string
           slug: string
           state?: string | null
+          status?: Database["public"]["Enums"]["property_status"]
           updated_at?: string
           whatsapp: string
         }
@@ -417,6 +419,7 @@ export type Database = {
           owner_id?: string
           slug?: string
           state?: string | null
+          status?: Database["public"]["Enums"]["property_status"]
           updated_at?: string
           whatsapp?: string
         }
@@ -491,27 +494,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      can_manage_property_folder: {
-        Args: { _folder: string; _user_id: string }
-        Returns: boolean
-      }
-      get_setting: { Args: { _key: string }; Returns: number }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      hit_rate_limit: {
-        Args: { _bucket: string; _max: number; _window_seconds: number }
-        Returns: undefined
-      }
-      is_public_property: { Args: { _property_id: string }; Returns: boolean }
-      owns_property: {
-        Args: { _property_id: string; _user_id: string }
-        Returns: boolean
-      }
       place_order: {
         Args: {
           p_customer: Json
@@ -540,6 +522,7 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+      property_status: "draft" | "published" | "suspended"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -676,6 +659,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      property_status: ["draft", "published", "suspended"],
     },
   },
 } as const
