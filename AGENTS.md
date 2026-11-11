@@ -32,3 +32,6 @@ use the editor.
 ## Database
 - Orders, items, customers and status history are written only by SECURITY DEFINER functions (`place_order`, `update_order_status`); clients get SELECT only, so prices/totals can't be tampered with.
 - Anti-spam limits live in `app_settings` (null = disabled) so values change without migrations.
+
+## Auth
+- Email/password only; signup always gets `producer` via `handle_new_user`. `admin` is granted only by a manual SQL insert into `user_roles` run by Lovable on request — never from the app.
