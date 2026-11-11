@@ -7,4 +7,5 @@
 - [ ] Migração complementar (4 ajustes + correções da auditoria) — SQL apresentado, aguardando revisão
 - [ ] Pastas de imagens — bloqueado: o workspace não permite pastas públicas (decisão do usuário)
 - [ ] Definir valores anti-spam e primeiro admin — aguardando usuário
-- [ ] Habilitar login por e-mail/senha — aguardando autorização
+- [x] Login por e-mail/senha, entrar/sair e painel mínimo
+- [ ] Primeiro admin — aguardando e-mail do usuário
